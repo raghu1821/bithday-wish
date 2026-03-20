@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Superstar! 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #f7c948;
+      --pink: #ff6eb4;
+      --purple: #c084fc;
+      --accent: #ffd166;
+      --glass: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --dark: #0d0820;
+      --text: #ffffff;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── SPLASH SCREEN ── */
+    #splash {
+      position: fixed; 
+      inset: 0; 
+      z-index: 1000;
+      display: flex; 
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center;
+      background: radial-gradient(circle at center, #1a0a3e, var(--dark));
+      transition: all 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    #splash.hide { opacity: 0; transform: translateY(-100%); pointer-events: none; }
+
+    .splash-img {
+      width: 200px; 
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--gold);
+      box-shadow: 0 0 50px rgba(247, 201, 72, 0.4);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(247,201,72,0.3); }
+      50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(247,201,72,0.6); }
+    }
+
+    .enter-btn {
+      margin-top: 30px;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, var(--gold), #fca311);
+      border: none; 
+      border-radius: 50px;
+      color: #241400; 
+      font-weight: 700;
+      cursor: pointer; 
+      font-size: 1.1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .enter-btn:hover { transform: scale(1.1); box-shadow: 0 10px 20px rgba(247, 201, 72, 0.3); }
+
+    /* ── BACKGROUND ── */
+    .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) infinite; }
+    @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+    /* ── MAIN LAYOUT ── */
+    #main { opacity: 0; transition: opacity 1s ease; padding: 40px 20px; position: relative; z-index: 1; display: none; }
+    #main.show { opacity: 1; display: block; }
+
+    .hero {
+      display: grid; 
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center; 
+      gap: 40px;
+      max-width: 1100px; 
+      margin: 0 auto 60px;
+      min-height: 80vh;
+    }
+
+    .hero-img {
+      width: 100%; 
+      max-width: 380px; 
+      aspect-ratio: 4/5;
+      object-fit: cover; 
+      border: 3px solid var(--gold);
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      animation: morph 8s ease-in-out infinite;
+      box-shadow: var(--shadow);
+    }
+
+    @keyframes morph {
+      0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+      50% { border-radius: 30% 60% 70% 30% / 50% 60% 30% 60%; }
+    }
+
+    /* ── GLASS CONTENT ── */
+    .glass-card {
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      margin-bottom: 30px;
+    }
+
+    h1.big {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.1; 
+      margin-bottom: 20px;
+    }
+    h1.big span { color: var(--gold); display: block; }
+
+    .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+    .badge {
+      background: rgba(255,255,255,0.1);
+      padding: 8px 16px; 
+      border-radius: 50px;
+      font-size: 0.85rem; 
+      border: 1px solid var(--glass-border);
+    }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    
+    .funny-card {
+      padding: 24px; 
+      border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      border-left: 4px solid var(--gold);
+      transition: transform 0.3s ease;
+    }
+    .funny-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.08); }
+
+    .reveal-box {
+      display: none; 
+      margin-top: 20px; 
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(255,209,102,0.1), rgba(255,107,139,0.1));
+      border: 1px dashed var(--gold); 
+      border-radius: 15px;
+      line-height: 1.6;
+    }
+
+    .sparkle-trail {
+      position: fixed; 
+      width: 8px; 
+      height: 8px;
+      border-radius: 50%; 
+      pointer-events: none;
+      z-index: 9999; 
+      animation: sparkleOut 0.7s forwards;
+    }
+
+    @keyframes sparkleOut {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0) translateY(-20px); opacity: 0; }
+    }
+
+    footer { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); font-size: 0.85rem; }
+
+    /* ── RESPONSIVE FIXES (Rectified) ── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+      .hero-img { margin: 0 auto; width: 80%; }
+      .badge-row { justify-content: center; }
+      .enter-btn { width: 100%; margin-left: 0 !important; margin-top: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="splash">
+    <img class="splash-img" src="https://i.ibb.co/YF3mKXh5/e3.png" alt="Special Person">
+    <h2 style="margin-top:20px; font-family:'Playfair Display'; color: var(--gold);">Happy Birthday, Superstar!</h2>
+    <p style="color: var(--purple); margin-top:10px;">Ready to level up? 🚀</p>
+    <button class="enter-btn" onclick="startExperience()">Open Your Gift →</button>
+  </div>
+
+  <div class="stars" id="starField"></div>
+
+  <div id="main">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="badge" style="color: var(--pink); border-color: var(--pink); margin-bottom: 15px;">✨ BIRTHDAY EXCLUSIVE</div>
+        <h1 class="big">Another Year of <span>Crushing Goals.</span></h1>
+        <p style="font-size: 1.1rem; opacity: 0.8; line-height: 1.7;">
+          Today we celebrate your energy and your focus. You're not just getting older; you're becoming a version of yourself that's even more unstoppable. 🏆
+        </p>
+        <div class="badge-row">
+          <span class="badge">🎯 Goal Crusher</span>
+          <span class="badge">💡 Visionary</span>
+          <span class="badge">🔥 Limitless</span>
+        </div>
+        <div style="margin-top: 30px;">
+          <button class="enter-btn" id="confettiBtn" style="margin-top:0;">Throw Confetti! 🎉</button>
+          <button class="enter-btn" id="revealBtn" style="background:rgba(255,255,255,0.1); color:white; margin-left:10px;">Surprise Note 💌</button>
+        </div>
+        <div class="reveal-box" id="revealBox">
+          <strong>A Small Reminder:</strong> You are absolutely killing it. Keep your focus sharp, your heart kind, and your cake slice massive. The world better watch out for you this year! 🌟
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <img class="hero-img" src="IMG-20260320-WA0007.jpg" alt="Birthday Star">
+      </div>
+    </section>
+
+    <div class="glass-card">
+      <h2 style="font-family:'Playfair Display'; margin-bottom:24px; color:var(--gold)">The Vibe Check 🔮</h2>
+      <div class="grid">
+        <div class="funny-card">
+          <h3 style="margin-bottom:10px; color: var(--pink);">The Focus 🎯</h3>
+          <p>Your clarity is next-level. While everyone else is still figuring it out, you've already finished the race and are planning the next one. We're inspired!</p>
+        </div>
+        <div class="funny-card">
+          <h3 style="margin-bottom:10px; color: var(--pink);">The Genius 🧠</h3>
+          <p>You have "Big Brain Energy." It's officially your day to stop overthinking and just start over-celebrating. No logic allowed today!</p>
+        </div>
+        <div class="funny-card">
+          <h3 style="margin-bottom:10px; color: var(--pink);">Warning 👻</h3>
+          <p>Bhoot bi kahi apko hardik shubhkamnaayein dene nahi aajaye sambhalke rahiyegaa 😄 Enjoy being officially one year older (and wiser)!</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Made with 🎂 cake & ✨ sparkles | Happy Birthday! 🎉</p>
+    </footer>
+  </div>
+
+  <script>
+    // 1. Setup Stars
+    const starField = document.getElementById('starField');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 3 + 'px';
+      star.style.width = size;
+      star.style.height = size;
+      star.style.top = Math.random() * 100 + '%';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
+      starField.appendChild(star);
+    }
+
+    // 2. Start Logic
+    function startExperience() {
+      document.getElementById('splash').classList.add('hide');
+      const mainContent = document.getElementById('main');
+      mainContent.classList.add('show');
+      setTimeout(() => launchConfetti(50), 400);
+    }
+
+    // 3. Confetti
+    function launchConfetti(count) {
+      const colors = ['#f7c948', '#ff6eb4', '#c084fc', '#a8d8f0', '#ffffff'];
+      for (let i = 0; i < count; i++) {
+        const c = document.createElement('div');
+        c.style.position = 'fixed';
+        c.style.width = '8px';
+        c.style.height = '8px';
+        c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.top = '-10px';
+        c.style.zIndex = '100';
+        c.style.borderRadius = '50%';
+        document.body.appendChild(c);
+
+        const fallDur = Math.random() * 3 + 2;
+        c.animate([
+          { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+          { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+        ], { duration: fallDur * 1000, easing: 'linear' });
+
+        setTimeout(() => c.remove(), fallDur * 1000);
+      }
+    }
+
+    document.getElementById('confettiBtn').addEventListener('click', () => launchConfetti(35));
+
+    // 4. Reveal Note
+    const rBtn = document.getElementById('revealBtn');
+    const rBox = document.getElementById('revealBox');
+    rBtn.addEventListener('click', () => {
+      const isHidden = rBox.style.display === 'none' || rBox.style.display === '';
+      rBox.style.display = isHidden ? 'block' : 'none';
+      rBtn.textContent = isHidden ? 'Close Note ✖' : 'Surprise Note 💌';
+    });
+
+    // 5. Sparkle Cursor
+    document.addEventListener('mousemove', (e) => {
+      if (Math.random() > 0.85) {
+        const sp = document.createElement('div');
+        sp.className = 'sparkle-trail';
+        sp.style.left = e.clientX + 'px';
+        sp.style.top = e.clientY + 'px';
+        sp.style.backgroundColor = ['#f7c948', '#ff6eb4', '#fff'][Math.floor(Math.random() * 3)];
+        document.body.appendChild(sp);
+        setTimeout(() => sp.remove(), 700);
+      }
+    });
+  </script>
+</body>
+</html>
